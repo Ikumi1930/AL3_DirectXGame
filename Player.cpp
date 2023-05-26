@@ -2,6 +2,13 @@
 #include <cassert>
 #include "new math.h"
 
+Player::~Player() { 
+	for (PlayerBullet* bullet : bullets_) {
+		delete bullet;
+	}
+}
+
+
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	//NULLポインタチェック
 	assert(model);
@@ -19,6 +26,7 @@ void Player::Attack() {
 		newBullet->Initialize(model_, worldTransform_.translation_);
 		//弾を登録
 		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
 
@@ -101,6 +109,11 @@ void Player::Update() {
 		bullet_->Update();
 	}
 
+	//弾変更
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+
 
 };
 
@@ -111,6 +124,12 @@ void Player::Draw(ViewProjection viewProjection) {
 	if (bullet_) {
 		bullet_->Draw(viewProjection);
 	}
+
+	//弾の描画
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
+	}
+
 };
 
 

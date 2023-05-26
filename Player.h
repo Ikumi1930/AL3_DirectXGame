@@ -7,6 +7,7 @@
 #include <cassert>
 #include "ImGuiManager.h"
 #include "PlayerBullet.h"
+#include <list>
 
 
 class Player {
@@ -26,6 +27,9 @@ public:
 	//攻撃
 	void Attack();
 
+	//デストラクタ
+	~Player();
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -42,5 +46,7 @@ private:
 
 	//弾
 	PlayerBullet* bullet_ = nullptr;
+
+	std::list < PlayerBullet*> bullets_;
 
 };
