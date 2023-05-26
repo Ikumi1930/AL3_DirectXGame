@@ -49,4 +49,6 @@ private:
 
 	std::list < PlayerBullet*> bullets_;
 
+	int count = 0;
+
 };

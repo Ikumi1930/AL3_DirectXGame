@@ -1,37 +1,54 @@
 ﻿#include "Player.h"
-#include <cassert>
 #include "new math.h"
+#include <cassert>
 
-Player::~Player() { 
+Player::~Player() {
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
 	}
 }
 
-
 void Player::Initialize(Model* model, uint32_t textureHandle) {
-	//NULLポインタチェック
+	// NULLポインタチェック
 	assert(model);
 	model_ = model;
 	textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
-	//シングルトンインスタンスを取得する
+	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
-
 }
 
 void Player::Attack() {
 	if (input_->PushKey(DIK_RETURN)) {
-		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
-		//弾を登録
-		bullet_ = newBullet;
-		bullets_.push_back(newBullet);
+		if (count == 0) {
+			// 弾の速度
+			const float kBulletSpeed = 1.0f;
+			Vector3 velocity(0, 0, kBulletSpeed);
+			velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+
+			PlayerBullet* newBullet = new PlayerBullet();
+			newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+			// 弾を登録
+			//bullet_ = newBullet;
+			bullets_.push_back(newBullet);
+			count++;
+		}
+
+	} else {
+		count = 0;
 	}
 }
 
+void Player::Update(){
 
-void Player::Update() {
+    // デスflagのたった球を削除
+    bullets_.remove_if([](PlayerBullet* bullet) {
+	    if (bullet->IsDead()) {
+		    delete bullet;
+		    return true;
+	    }
+	    return false;
+    });
 
 	worldTransform_.TransferMatrix();
 
@@ -46,7 +63,7 @@ void Player::Update() {
 		move.x -= kCharacterSpeed;
 		inputFloat3[0] = worldTransform_.translation_.x;
 	} else if (input_->PushKey(DIK_RIGHT)) {
-		move.x += kCharacterSpeed;	
+		move.x += kCharacterSpeed;
 		inputFloat3[0] = worldTransform_.translation_.x;
 	}
 
@@ -113,38 +130,17 @@ void Player::Update() {
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
-
-
 };
-
 
 void Player::Draw(ViewProjection viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	//弾の描画
-	if (bullet_) {
+	// 弾の描画
+	 if (bullet_) {
 		bullet_->Draw(viewProjection);
 	}
 
-	//弾の描画
+	// 弾の描画
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
-
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
