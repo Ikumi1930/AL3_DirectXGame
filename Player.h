@@ -3,6 +3,9 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #include "ViewProjection.h"
+#include "Input.h"
+#include <cassert>
+#include "ImGuiManager.h"
 
 
 class Player {
@@ -27,5 +30,10 @@ public:
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 	
+	//キーボード入力
+	Input* input_ = nullptr;
+
+	//ImGuiで値を入力する
+	float inputFloat3[3] = {0, 0, 0};
 
 };
