@@ -1,6 +1,5 @@
 ﻿#include "Player.h"
 #include "new math.h"
-#include <cassert>
 
 Player::~Player() {
 	for (PlayerBullet* bullet : bullets_) {
@@ -122,9 +121,9 @@ void Player::Update(){
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
 	Attack();
-	if (bullet_) {
+	/* if (bullet_) {
 		bullet_->Update();
-	}
+	}*/
 
 	//弾変更
 	for (PlayerBullet* bullet : bullets_) {
@@ -135,9 +134,9 @@ void Player::Update(){
 void Player::Draw(ViewProjection viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 	// 弾の描画
-	 if (bullet_) {
+	/* if (bullet_) {
 		bullet_->Draw(viewProjection);
-	}
+	}*/
 
 	// 弾の描画
 	for (PlayerBullet* bullet : bullets_) {

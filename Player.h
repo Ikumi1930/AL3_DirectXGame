@@ -45,7 +45,7 @@ private:
 	float inputFloat3[3] = {0, 0, 0};
 
 	//弾
-	PlayerBullet* bullet_ = nullptr;
+	//PlayerBullet* bullet_ = nullptr;
 
 	std::list < PlayerBullet*> bullets_;
 

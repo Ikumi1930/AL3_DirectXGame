@@ -1,6 +1,8 @@
 #pragma once
 #include <cmath>
 #include <cassert>
+#include "Vector3.h"
+#include "Matrix4x4.h"
 
 inline Vector3 Add(const Vector3& v1, const Vector3& v2) { 
 	Vector3 result{};
