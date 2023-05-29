@@ -5,7 +5,7 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 
 	assert(model);
 	model_ = model;
-	texturehandle_ = TextureManager::Load("uvChecker.png");
+	texturehandle_ = TextureManager::Load("Gakugakun2.png");
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
