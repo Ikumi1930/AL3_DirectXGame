@@ -2,6 +2,12 @@
 #include "new math.h"
 #include "Model.h"
 
+enum class Phase {
+	Approach,
+	Leave,
+};
+
+
 class Enemy {
 
 	public:
@@ -12,9 +18,14 @@ class Enemy {
 
 		void Draw(const ViewProjection& view);
 
+		void ApproachMove();
+
+	    void LeaveMove();
 
 	private:
 	    WorldTransform worldTransform_;
 	    Model* model_;
 	    uint32_t texturehandle_;
+
+		Phase phase_ = Phase::Approach;
 };
