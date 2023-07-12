@@ -20,6 +20,8 @@ private:
 	Model* model_;
 	uint32_t texturehandle_;
 	Vector3 velocity_;
+	//Vector3 Add(Vector3& a, Vector3& b);
+
 
 	static const int32_t kLifeTime = 60;
 
