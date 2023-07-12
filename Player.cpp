@@ -18,7 +18,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 }
 
 void Player::Attack() {
-	if (input_->PushKey(DIK_RETURN)) {
+	if (input_->PushKey(DIK_SPACE)) {
 		if (count == 0) {
 			// 弾の速度
 			const float kBulletSpeed = 1.0f;
@@ -105,7 +105,7 @@ void Player::Update(){
 
 	//ImGuiスライダー
 	ImGui::Begin("PlayerDebug");
-	ImGui::Text("DebugCamera Toggle : SPACE");
+	ImGui::Text("DebugCamera Toggle : ENTER");
 	ImGui::SliderFloat3("Positions", inputFloat3, -20.0f, 20.0f);
 	ImGui::End();
 
