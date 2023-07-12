@@ -21,7 +21,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 }
 
 void Player::Attack() {
-	if (input_->PushKey(DIK_RETURN)) {
+	if (input_->PushKey(DIK_SPACE)) {
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 		//弾を登録
@@ -89,7 +89,7 @@ void Player::Update() {
 
 	//ImGuiスライダー
 	ImGui::Begin("PlayerDebug");
-	ImGui::Text("DebugCamera Toggle : SPACE");
+	ImGui::Text("DebugCamera Toggle : ENTER");
 	ImGui::SliderFloat3("Positions", inputFloat3, -20.0f, 20.0f);
 	ImGui::End();
 
