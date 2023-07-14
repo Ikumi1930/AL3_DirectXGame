@@ -15,7 +15,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	worldTransform_.Initialize();
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
-}
+};
 
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE)) {

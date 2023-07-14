@@ -1,5 +1,37 @@
-#include "Enemy.h"
+﻿#include "Enemy.h"
 #include <assert.h>
+
+Enemy::~Enemy() {
+
+	delete state;
+	for (EnemyBullet* bullet : bullets_) {
+		delete bullet;
+	}
+}
+
+void Enemy::Attack() {
+
+	timer++;
+
+	if (count == 0) {
+		if (timer >= 0) {
+			// 弾の速度
+			const float kBulletSpeed = -1.0f;
+			Vector3 velocity(0, 0, kBulletSpeed);
+			velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+
+			EnemyBullet* newBullet = new EnemyBullet();
+			newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+			// 弾を登録
+			// bullet_ = newBullet;
+			bullets_.push_back(newBullet);
+			count++;
+		}
+	} else if (timer >= 60) {
+		count = 0;
+		timer = 0;
+	}
+}
 
 void Enemy::Initialize(Model* model, const Vector3& position) {
 
@@ -9,58 +41,67 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
+	state = new EnemyStateApproah();
+	state->SetEnemy(this);
+
 }
 
-void Enemy::ApproachMove() {
+void Enemy::ChangeState(EnemyState* newEnemyState) {
+	delete state;
 
-	Vector3 move = {0, 0, 0};
-	const float kCharacterSpeed = 0.2f;
+	state = newEnemyState;
+	state->SetEnemy(this);
+}
 
-	move.z -= kCharacterSpeed;
-	worldTransform_.translation_ = Add(worldTransform_.translation_, move);
-	worldTransform_.UpdateMatrix();
+void Enemy::SetPosition(Vector3 speed) {
+	worldTransform_.translation_ = Add(worldTransform_.translation_, speed);
+}
 
-	if (worldTransform_.translation_.z < 0.0f) {
-		phase_ = Phase::Leave;
+void EnemyStateApproah::Update() {
+	Vector3 appSpeed(0, 0, -0.2f);
+	enemy_->SetPosition(appSpeed);
+	if (enemy_->GetWT().translation_.z < 0.0f) {
+		enemy_->ChangeState(new EnemyStateLeave);
 	}
 }
 
-void Enemy::LeaveMove() {
-
-	Vector3 move = {0, 0, 0};
-	const float kCharacterSpeed = 0.2f;
-
-	move.x += kCharacterSpeed;
-	move.y += kCharacterSpeed;
-	move.z += kCharacterSpeed;
-	worldTransform_.translation_ = Add(worldTransform_.translation_, move);
-	worldTransform_.UpdateMatrix();
-
-	if (worldTransform_.translation_.z > 30.0f) {
-		phase_ = Phase::Leave;
-	}
+void EnemyStateLeave::Update() {
+	Vector3 leaveSpeed(-0.2f, 0.2f, 0.2f);
+	enemy_->SetPosition(leaveSpeed);
 }
 
 void Enemy::Update() {
 
-	switch (phase_) {
-	case Phase::Approach:
+	// デスフラグの立った球を削除
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 
-		Enemy::ApproachMove();
+	state->Update();
 
-		break;
+	Attack();
 
-	case Phase::Leave:
+	worldTransform_.UpdateMatrix();
 
-		Enemy::LeaveMove();
-
-		break;
+	// 弾更新
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Update();
 	}
 }
+
 
 void Enemy::Draw(const ViewProjection& view) {
 
 	model_->Draw(worldTransform_, view, texturehandle_);
+
+	// 弾の描画
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Draw(view);
+	}
 }
 
 

@@ -45,9 +45,10 @@ private:
 	float inputFloat3[3] = {0, 0, 0};
 
 	//弾
-	//PlayerBullet* bullet_ = nullptr;
+	PlayerBullet* bullet_ = nullptr;
 
-	std::list < PlayerBullet*> bullets_;
+	// 弾
+	std::list<PlayerBullet*> bullets_;
 
 	int count = 0;
 
