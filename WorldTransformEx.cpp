@@ -1,8 +1,7 @@
 #include "WorldTransform.h"
-#include "new math.h"
+#include "newMath.h"
 
-
-void WorldTransform::UpdateMatrix() { 
-	matWorld_ = MakeAffineMatrix(scale_, rotation_, translation_);
+void WorldTransform::UpdateMatrix() {
+	matWorld_ = Math::MakeAffineMatrix(scale_, rotation_, translation_);
 	TransferMatrix();
 }

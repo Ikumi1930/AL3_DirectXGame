@@ -1,10 +1,14 @@
 ﻿#pragma once
-#include "new math.h"
-#include "Model.h"
-#include "WorldTransform.h"
-#include "ViewProjection.h"
-#include <list>
 #include "EnemyBullet.h"
+#include "Model.h"
+#include "Player.h"
+#include "TimedCall.h"
+#include "ViewProjection.h"
+#include "WorldTransform.h"
+#include "newMath.h"
+#include <list>
+
+class Player;
 
 class Enemy;
 
@@ -37,39 +41,47 @@ public:
 
 class Enemy {
 
-	public:
+public:
+	~Enemy();
 
-		~Enemy();
+	void Initialize(Model* model, const Vector3& position);
 
-		void Initialize(Model* model, const Vector3& position);
+	void Update();
 
-		void Update();
+	void Draw(const ViewProjection& view);
 
-		void Draw(const ViewProjection& view);
+	void ChangeState(EnemyState* newEnemyState);
 
-		void ChangeState(EnemyState* newEnemyState);
+	WorldTransform GetWT() { return worldTransform_; }
 
-		WorldTransform GetWT() { return worldTransform_; }
+	void SetPosition(Vector3 speed);
 
-		void SetPosition(Vector3 speed);
+	// 攻撃
+	void Attack();
 
-		// 攻撃
-	    void Attack();
+	void Fire();
 
-	private:
-	    WorldTransform worldTransform_;
-	    Model* model_;
-	    uint32_t texturehandle_;
+	void SetPlayer(Player* player) { player_ = player; }
 
-		Phase phase_ = Phase::Approach;
+	Vector3 GetWorldPosition();
 
-		EnemyState* state;
+private:
+	WorldTransform worldTransform_;
+	Model* model_;
+	uint32_t texturehandle_;
 
-	    // 弾
-	    std::list<EnemyBullet*> bullets_;
+	Phase phase_ = Phase::Approach;
 
-	    int count = 0;
+	Player* player_ = nullptr;
 
-	    int timer = 0;
+	EnemyState* state;
 
+	// 弾
+	std::list<EnemyBullet*> bullets_;
+
+	std::list<TimedCall*> timedCall_;
+
+	static const int kShotInterval = 60;
+
+	int timer = 0;
 };

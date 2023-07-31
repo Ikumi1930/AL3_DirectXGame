@@ -13,7 +13,7 @@ public:
 
 	bool IsDead() const { return isDead_; }
 
-	private:
+private:
 	WorldTransform worldTransform_;
 	Model* model_;
 	uint32_t texturehandle_;
@@ -26,5 +26,3 @@ public:
 	// デスフラグ
 	bool isDead_ = false;
 };
-
-

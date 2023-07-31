@@ -1,6 +1,6 @@
 ﻿#include "EnemyBullet.h"
+#include "newMath.h"
 #include <assert.h>
-#include "new Math.h"
 
 void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 
@@ -21,7 +21,7 @@ void EnemyBullet::Update() {
 
 	worldTransform_.UpdateMatrix();
 	// 座標を移動
-	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+	worldTransform_.translation_ = Math::Add(worldTransform_.translation_, velocity_);
 
 	// 時間経過でデス
 	if (--deathtimer_ <= 0) {
@@ -32,11 +32,6 @@ void EnemyBullet::Update() {
 void EnemyBullet::Draw(const ViewProjection& view) {
 	model_->Draw(worldTransform_, view, texturehandle_);
 }
-
-
-
-
-
 
 
 

@@ -31,6 +31,7 @@ void GameScene::Initialize() {
 
 	//敵の生成
 	enemy_ = new Enemy;
+	enemy_->SetPlayer(player_);
 	Vector3 position = {0, 0, 30};
 
 	//敵初期化
