@@ -31,6 +31,10 @@ public:
 
 	Vector3 GetWorldPosition();
 
+	// 衝突を検証したら呼び出される関数
+	void OnCollision();
+	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
+
 	// デストラクタ
 	~Player();
 

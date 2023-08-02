@@ -19,14 +19,3 @@ private:
 	// 完了のフラグ
 	bool isFinish = false;
 };
-
-
-
-
-
-
-
-
-
-
-

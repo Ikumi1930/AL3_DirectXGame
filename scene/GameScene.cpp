@@ -1,7 +1,7 @@
 #include "GameScene.h"
+#include "AxisIndicator.h"
 #include "TextureManager.h"
 #include <cassert>
-#include "AxisIndicator.h"
 
 GameScene::GameScene() {}
 
@@ -15,9 +15,9 @@ GameScene::~GameScene() {
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
-	audio_ = Audio::GetInstance();
 	input_ = Input::GetInstance();
-	// テクスチャ読み込み
+	audio_ = Audio::GetInstance();
+	// テクスチャを読み込み
 	textureHandle_ = TextureManager::Load("sample.png");
 	// 3Dモデルの生成
 	model_ = Model::Create();
@@ -28,56 +28,50 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
-
-	//敵の生成
+	// 敵の生成
 	enemy_ = new Enemy;
 	enemy_->SetPlayer(player_);
-	Vector3 position = {0, 0, 30};
-
-	//敵初期化
+	Vector3 position = {30.0f, 0.0f, 30.0f};
+	// 敵初期化
 	enemy_->Initialize(model_, position);
-
-	//デバックカメラの生成
+	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
-
-	//軸方向表示を有効にする
+	// 軸方向表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
-
-	//アドレス渡し
+	// アドレス渡し
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 }
 
 void GameScene::Update() {
-	//自キャラの更新
+	// 自キャラの更新
+
 	player_->Update();
 
 	enemy_->Update();
 
-	#ifdef _DEBUG
+	CheckAllCollisions();
+
+#ifdef _DEBUG
 
 	if (input_->TriggerKey(DIK_RETURN) && isDebugCameraActive_ == false) {
 		isDebugCameraActive_ = true;
 	} else if (input_->TriggerKey(DIK_RETURN) && isDebugCameraActive_ == true) {
-		isDebugCameraActive_ = false;	
+		isDebugCameraActive_ = false;
 	}
-
-	//カメラの処理
+	// カメラの処理
 	if (isDebugCameraActive_ == true) {
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-		//ビュープロジェクション行列の転送
+		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
 	} else {
-	//ビュープロジェクション行列の更新と転送
+		// ビュープロジェクション行列の更新と転送
 		viewProjection_.UpdateMatrix();
 	}
-
-	#endif
+#endif
 
 	debugCamera_->Update();
-
 }
 
 void GameScene::Draw() {
@@ -126,5 +120,71 @@ void GameScene::Draw() {
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
+#pragma endregion
+}
+
+void GameScene::CheckAllCollisions() {
+	// 判定対象AとBの座標
+	Vector3 posA, posB;
+
+	// 自弾リストの取得
+	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	// 敵弾リストの取得
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+
+#pragma region 自キャラと敵弾
+	posA = player_->GetWorldPosition();
+
+	for (EnemyBullet* bullet : enemyBullets) {
+		posB = bullet->GetWorldPosition();
+
+		float judge = (posB.x - posA.x) * (posB.x - posA.x) +
+		              (posB.y - posA.y) * (posB.y - posA.y) + (posB.z - posA.z) * (posB.z - posA.z);
+
+		float playerRad = 2.5f;
+		float enemyRad = 2.5f;
+		if (judge <= (playerRad + enemyRad) * (playerRad + enemyRad)) {
+			player_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+#pragma endregion
+
+#pragma region 自弾と敵キャラ
+
+	for (PlayerBullet* playerBullet : playerBullets) {
+		posB = playerBullet->GetWorldPosition();
+		for (EnemyBullet* enemyBullet : enemyBullets) {
+			posA = enemyBullet->GetWorldPosition();
+
+			float judge = (posB.x - posA.x) * (posB.x - posA.x) +
+			              (posB.y - posA.y) * (posB.y - posA.y) +
+			              (posB.z - posA.z) * (posB.z - posA.z);
+
+			float playerRad = 2.5f;
+			float enemyRad = 2.5f;
+			if (judge <= (playerRad + enemyRad) * (playerRad + enemyRad)) {
+				playerBullet->OnCollision();
+				enemyBullet->OnCollision();
+			}
+		}
+	}
+#pragma endregion
+
+#pragma region 自弾と敵キャラ
+	posB = enemy_->GetWorldPosition();
+	for (PlayerBullet* bullet : playerBullets) {
+		posA = bullet->GetWorldPosition();
+
+		float judge = (posB.x - posA.x) * (posB.x - posA.x) +
+		              (posB.y - posA.y) * (posB.y - posA.y) + (posB.z - posA.z) * (posB.z - posA.z);
+
+		float playerRad = 2.5f;
+		float enemyRad = 2.5f;
+		if (judge <= (playerRad + enemyRad) * (playerRad + enemyRad)) {
+			player_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
 #pragma endregion
 }

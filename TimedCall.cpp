@@ -22,13 +22,3 @@ void TimedCall::Update() {
 		callBack_();
 	}
 }
-
-
-
-
-
-
-
-
-
-
