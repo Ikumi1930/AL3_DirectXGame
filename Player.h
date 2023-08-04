@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Model.h"
 #include "PlayerBullet.h"
+#include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include <cassert>
@@ -19,7 +20,7 @@ public:
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void Update(ViewProjection& viewProjection);
 
 	/// <summary>
 	/// 描画
@@ -38,6 +39,8 @@ public:
 	void SetParent(const WorldTransform* parent);
 
 	WorldTransform& GetWorldMatrix() { return worldTransform_; }
+
+	void DrawUI();
 
 	// デストラクタ
 	~Player();
@@ -59,4 +62,8 @@ private:
 	std::list<PlayerBullet*> bullets_;
 
 	int count = 0;
+
+	WorldTransform worldTransform3DReticle_;
+
+	Sprite* sprite2DReticle_ = nullptr;
 };
