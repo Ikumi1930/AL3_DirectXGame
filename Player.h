@@ -42,6 +42,8 @@ public:
 
 	void DrawUI();
 
+	void MouseUpdate(ViewProjection& view);
+
 	// デストラクタ
 	~Player();
 
@@ -62,6 +64,9 @@ private:
 	std::list<PlayerBullet*> bullets_;
 
 	int count = 0;
+
+	bool isControl = false;
+	bool isAttack = false;
 
 	WorldTransform worldTransform3DReticle_;
 
