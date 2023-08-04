@@ -51,16 +51,18 @@ void Enemy::Attack() {
 	}
 }
 
-void Enemy::Initialize(Model* model, const Vector3& position) {
+void Enemy::Initialize(Model* model, const Vector3& position, GameScene* gameScene) {
 
 	assert(model);
 	model_ = model;
-	texturehandle_ = TextureManager::Load("Gakugakun2.png");
+	texturehandle_ = TextureManager::Load("beam.png");
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
 	state = new EnemyStateApproah();
 	state->SetEnemy(this);
+
+	SetGameScene(gameScene);
 }
 
 Vector3 Enemy::GetWorldPosition() {
