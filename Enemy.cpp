@@ -55,7 +55,7 @@ void Enemy::Initialize(Model* model, const Vector3& position, GameScene* gameSce
 
 	assert(model);
 	model_ = model;
-	texturehandle_ = TextureManager::Load("beam.png");
+	texturehandle_ = TextureManager::Load("gakugakun2.png");
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
