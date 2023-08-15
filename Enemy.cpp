@@ -5,10 +5,9 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 
 	assert(model);
 	model_ = model;
-	texturehandle_ = TextureManager::Load("Gakugakun2.png");
+	texturehandle_ = TextureManager::Load("gakugakun2.png");
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
-
 }
 
 void Enemy::ApproachMove() {
@@ -41,29 +40,19 @@ void Enemy::LeaveMove() {
 	}
 }
 
+void (Enemy::*Enemy::spFuncTable[])(){&Enemy::ApproachMove, &Enemy::LeaveMove};
+
 void Enemy::Update() {
 
-	switch (phase_) {
-	case Phase::Approach:
+	(this->*spFuncTable[static_cast<size_t>(phase_)])();
 
-		Enemy::ApproachMove();
-
-		break;
-
-	case Phase::Leave:
-
-		Enemy::LeaveMove();
-
-		break;
-	}
+	worldTransform_.UpdateMatrix();
 }
 
 void Enemy::Draw(const ViewProjection& view) {
 
 	model_->Draw(worldTransform_, view, texturehandle_);
 }
-
-
 
 
 

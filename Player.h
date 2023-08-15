@@ -1,54 +1,52 @@
 ﻿#pragma once
 
-#include "Model.h"
-#include "WorldTransform.h"
-#include "ViewProjection.h"
-#include "Input.h"
-#include <cassert>
 #include "ImGuiManager.h"
+#include "Input.h"
+#include "Model.h"
 #include "PlayerBullet.h"
+#include "ViewProjection.h"
+#include "WorldTransform.h"
+#include <cassert>
 #include <list>
-
 
 class Player {
 public:
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize(Model* model, uint32_t textureHandle);
 
-	//
-	//初期化
-	//
-	void Initialize(Model* model,uint32_t textureHandle);
-
-	//更新
+	/// <summary>
+	/// 毎フレーム処理
+	/// </summary>
 	void Update();
 
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw(ViewProjection viewProjection);
 
-	//攻撃
+	// 攻撃
 	void Attack();
 
-	//デストラクタ
+	// デストラクタ
 	~Player();
 
 private:
-	//ワールド変換データ
+	// ワールド変換データ
 	WorldTransform worldTransform_;
-	//モデル
+	// モデル
 	Model* model_ = nullptr;
-	//テクスチャハンドル
+	// テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
-	
-	//キーボード入力
+	// キーボード入力
 	Input* input_ = nullptr;
-
-	//ImGuiで値を入力する
+	// ImGuiで値を入力する
 	float inputFloat3[3] = {0, 0, 0};
-
-	//弾
-	//PlayerBullet* bullet_ = nullptr;
-
-	std::list < PlayerBullet*> bullets_;
+	// 弾
+	// PlayerBullet* bullet_ = nullptr;
+	// 弾
+	std::list<PlayerBullet*> bullets_;
 
 	int count = 0;
-
 };

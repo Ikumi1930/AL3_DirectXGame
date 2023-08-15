@@ -1,31 +1,33 @@
 #pragma once
-#include "new math.h"
 #include "Model.h"
+#include "newMath.h"
 
 enum class Phase {
 	Approach,
 	Leave,
 };
 
-
 class Enemy {
 
-	public:
+public:
+	void Initialize(Model* model, const Vector3& position);
 
-		void Initialize(Model* model, const Vector3& position);
+	void Update();
 
-		void Update();
+	void Draw(const ViewProjection& view);
 
-		void Draw(const ViewProjection& view);
+	void ApproachMove();
 
-		void ApproachMove();
+	void LeaveMove();
 
-	    void LeaveMove();
+private:
+	WorldTransform worldTransform_;
+	Model* model_;
+	uint32_t texturehandle_;
 
-	private:
-	    WorldTransform worldTransform_;
-	    Model* model_;
-	    uint32_t texturehandle_;
+	Phase phase_ = Phase::Approach;
 
-		Phase phase_ = Phase::Approach;
+	static void (Enemy::*spFuncTable[])();
+
+	void (Enemy::*pApproachMove)();
 };
