@@ -1,6 +1,10 @@
 #pragma once
+#include "EnemyState.h"
 #include "Model.h"
 #include "newMath.h"
+
+class Enemy;
+class EnemyState;
 
 enum class Phase {
 	Approach,
@@ -16,9 +20,11 @@ public:
 
 	void Draw(const ViewProjection& view);
 
-	void ApproachMove();
+	void ChangeState(EnemyState* newEnemyState);
 
-	void LeaveMove();
+	WorldTransform GetWT() { return worldTransform_; }
+
+	void SetPosition(Vector3 speed);
 
 private:
 	WorldTransform worldTransform_;
@@ -27,7 +33,5 @@ private:
 
 	Phase phase_ = Phase::Approach;
 
-	static void (Enemy::*spFuncTable[])();
-
-	void (Enemy::*pApproachMove)();
+	EnemyState* state;
 };
