@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	// テクスチャを読み込み
-	textureHandle_ = TextureManager::Load("sample.png");
+	textureHandle_ = TextureManager::Load("SusumePlayer1.png");
 	// 3Dモデルの生成
 	model_ = Model::Create();
 	worldTransform_.Initialize();

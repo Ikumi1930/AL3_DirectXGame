@@ -73,7 +73,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	worldTransform3DReticle_.Initialize();
 
-	uint32_t textureReticle = TextureManager::Load("reticle.png");
+	uint32_t textureReticle = TextureManager::Load("white1x1.png");
 
 	sprite2DReticle_ = Sprite::Create(
 	    textureReticle, {WinApp::kWindowWidth / 2, WinApp::kWindowHeight / 2}, {1, 1, 1, 1},
