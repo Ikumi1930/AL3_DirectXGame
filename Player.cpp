@@ -33,12 +33,36 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model);
 
 	model_ = model;
+	modelL_ = model;
+	modelR_ = model;
 	textureHandle_ = textureHandle;
 
 	worldTransform_.Initialize();
 	worldTransform_.translation_.z = 50.0f;
 
+	worldTransformL_.Initialize();
+	worldTransformR_.Initialize();
+
+
+
+	worldTransformL_.parent_ = &worldTransform_;
+	worldTransformR_.parent_ = &worldTransform_;
+
+	worldTransformL_.translation_.x = -2.0f;
+	worldTransformR_.translation_.x = 2.0f;
+	worldTransformL_.translation_.y = -3.0f;
+	worldTransformR_.translation_.y = 3.0f;
+
+
+
+
 	input_ = Input::GetInstance();
+
+	worldTransform_.UpdateMatrix();
+
+	worldTransformL_.UpdateMatrix();
+
+	worldTransformR_.UpdateMatrix();
 };
 
 void Player::OnCollision() {}
@@ -64,7 +88,12 @@ void Player::Update() {
 		return false;
 	});
 
-	worldTransform_.TransferMatrix();
+	worldTransform_.UpdateMatrix();
+
+	worldTransformL_.UpdateMatrix();
+
+	worldTransformR_.UpdateMatrix();
+
 	// キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
 
@@ -99,8 +128,8 @@ void Player::Update() {
 	}
 
 	// ImGui加算用
-	worldTransform_.translation_.x = inputFloat3[0];
-	worldTransform_.translation_.y = inputFloat3[1];
+	//worldTransform_.translation_.x = inputFloat3[0];
+	//worldTransform_.translation_.y = inputFloat3[1];
 
 	// ベクターの加算
 	worldTransform_.translation_ = Math::Add(worldTransform_.translation_, move);
@@ -140,6 +169,11 @@ void Player::Update() {
 void Player::Draw(ViewProjection viewProjection) {
 
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+
+	modelL_->Draw(worldTransformL_, viewProjection, textureHandle_);
+
+	modelR_->Draw(worldTransformR_, viewProjection, textureHandle_);
+
 	// 弾描画
 	/* if (bullet_) {
 	    bullet_->Draw(viewProjection);

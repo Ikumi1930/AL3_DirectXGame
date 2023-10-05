@@ -13,6 +13,8 @@
 #include "WorldTransform.h"
 #include <RailCamera.h>
 #include <Skydome.h>
+#include "PlayerBullet.h"
+
 
 /// <summary>
 /// ゲームシーン
@@ -68,6 +70,15 @@ private: // メンバ変数
 
 	// 自キャラ
 	Player* player_ = nullptr;
+
+
+
+
+	//sikaku
+	Sprite* sprite_ = nullptr;
+
+
+
 
 	// スカイドーム
 	Skydome* skydome_ = nullptr;

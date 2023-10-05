@@ -3,11 +3,11 @@
 #include "ImGuiManager.h"
 #include "Input.h"
 #include "Model.h"
-#include "PlayerBullet.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include <cassert>
 #include <list>
+#include "PlayerBullet.h"
 
 class Player {
 public:
@@ -45,8 +45,18 @@ public:
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
+
+	WorldTransform worldTransformL_;
+
+	WorldTransform worldTransformR_;
+
 	// モデル
 	Model* model_ = nullptr;
+	Model* modelL_ = nullptr;
+	Model* modelR_ = nullptr;
+
+
+
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 	// キーボード入力

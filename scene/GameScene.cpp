@@ -44,6 +44,12 @@ void GameScene::Initialize() {
 	// アドレス渡し
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
+	
+
+
+
+
+
 	skydome_ = new Skydome();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_->Initialize(modelSkydome_, {0, 80, 0});
