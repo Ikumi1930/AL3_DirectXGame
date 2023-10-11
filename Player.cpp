@@ -44,7 +44,6 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	//体のワールドトランスフォーム
 	worldTransform_.Initialize();
-	worldTransform_.translation_.z = 50.0f;
 	//手のワールドトランスフォーム
 	worldTransformL_.Initialize();
 	worldTransformR_.Initialize();
@@ -65,18 +64,20 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 
 	//位置
+	// 体
+	worldTransform_.translation_.z = 50.0f;
 	//右手
 	worldTransformR_.translation_.x = 2.0f;
-	worldTransformR_.translation_.y = 3.0f;
+	worldTransformR_.translation_.y = 2.0f;
 	//左手
 	worldTransformL_.translation_.x = -2.0f;
-	worldTransformL_.translation_.y = -3.0f;
-	//右足
-	worldTransformLR_.translation_.x = 4.0f;
-	worldTransformLR_.translation_.y = 6.0f;
-	//左足
-	worldTransformLL_.translation_.x = -4.0f;
-	worldTransformLL_.translation_.y = -6.0f;
+	worldTransformL_.translation_.y = 2.0f;
+	////右足
+	worldTransformLR_.translation_.x = 2.0f;
+	worldTransformLR_.translation_.y = -4.0f;
+	////左足
+	worldTransformLL_.translation_.x = -2.0f;
+	worldTransformLL_.translation_.y = -4.0f;
 
 
 	input_ = Input::GetInstance();
