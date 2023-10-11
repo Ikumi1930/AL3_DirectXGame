@@ -45,16 +45,24 @@ public:
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
-
+	//手のワールド変換データ
 	WorldTransform worldTransformL_;
-
 	WorldTransform worldTransformR_;
+	//足のワールド変換データ
+	WorldTransform worldTransformLL_;
+	WorldTransform worldTransformLR_;
+
+
 
 	// モデル
 	Model* model_ = nullptr;
+	//手
 	Model* modelL_ = nullptr;
 	Model* modelR_ = nullptr;
 
+	//足
+	Model* modelLL_ = nullptr;
+	Model* modelLR_ = nullptr;
 
 
 	// テクスチャハンドル

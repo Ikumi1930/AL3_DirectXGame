@@ -31,29 +31,52 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	// NULLポインタチェック
 	assert(model);
-
+	//体
 	model_ = model;
+	//手
 	modelL_ = model;
 	modelR_ = model;
+	//足
+	modelLL_ = model;
+	modelLR_ = model;
+
 	textureHandle_ = textureHandle;
 
+	//体のワールドトランスフォーム
 	worldTransform_.Initialize();
 	worldTransform_.translation_.z = 50.0f;
-
+	//手のワールドトランスフォーム
 	worldTransformL_.Initialize();
 	worldTransformR_.Initialize();
+	//足のワールドトランスフォーム
+	worldTransformLL_.Initialize();
+	worldTransformLR_.Initialize();
 
 
-
+	//親子関係
+	//左手
 	worldTransformL_.parent_ = &worldTransform_;
+	//右手
 	worldTransformR_.parent_ = &worldTransform_;
+	//左足
+	worldTransformLL_.parent_ = &worldTransform_;
+	//右足
+	worldTransformLR_.parent_ = &worldTransform_;
 
-	worldTransformL_.translation_.x = -2.0f;
+
+	//位置
+	//右手
 	worldTransformR_.translation_.x = 2.0f;
-	worldTransformL_.translation_.y = -3.0f;
 	worldTransformR_.translation_.y = 3.0f;
-
-
+	//左手
+	worldTransformL_.translation_.x = -2.0f;
+	worldTransformL_.translation_.y = -3.0f;
+	//右足
+	worldTransformLR_.translation_.x = 4.0f;
+	worldTransformLR_.translation_.y = 6.0f;
+	//左足
+	worldTransformLL_.translation_.x = -4.0f;
+	worldTransformLL_.translation_.y = -6.0f;
 
 
 	input_ = Input::GetInstance();
@@ -63,6 +86,12 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	worldTransformL_.UpdateMatrix();
 
 	worldTransformR_.UpdateMatrix();
+
+	worldTransformLL_.UpdateMatrix();
+
+	worldTransformLR_.UpdateMatrix();
+
+
 };
 
 void Player::OnCollision() {}
@@ -93,6 +122,11 @@ void Player::Update() {
 	worldTransformL_.UpdateMatrix();
 
 	worldTransformR_.UpdateMatrix();
+
+	worldTransformLL_.UpdateMatrix();
+
+	worldTransformLR_.UpdateMatrix();
+
 
 	// キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
@@ -173,6 +207,10 @@ void Player::Draw(ViewProjection viewProjection) {
 	modelL_->Draw(worldTransformL_, viewProjection, textureHandle_);
 
 	modelR_->Draw(worldTransformR_, viewProjection, textureHandle_);
+
+	modelLL_->Draw(worldTransformLL_, viewProjection, textureHandle_);
+
+	modelLR_->Draw(worldTransformLR_, viewProjection, textureHandle_);
 
 	// 弾描画
 	/* if (bullet_) {
