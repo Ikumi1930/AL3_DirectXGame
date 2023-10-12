@@ -51,6 +51,9 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	worldTransformLL_.Initialize();
 	worldTransformLR_.Initialize();
 
+	//
+	worldTransformRootL_.Initialize();
+
 
 	//親子関係
 	//左手
@@ -58,9 +61,12 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	//右手
 	worldTransformR_.parent_ = &worldTransform_;
 	//左足
-	worldTransformLL_.parent_ = &worldTransform_;
+	worldTransformLL_.parent_ = &worldTransformRootL_;
 	//右足
 	worldTransformLR_.parent_ = &worldTransform_;
+
+	//
+	worldTransformRootL_.parent_ = &worldTransform_;
 
 
 	//位置
@@ -76,21 +82,15 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	worldTransformLR_.translation_.x = 2.0f;
 	worldTransformLR_.translation_.y = -4.0f;
 	////左足
-	worldTransformLL_.translation_.x = -2.0f;
+	worldTransformLL_.translation_.x = 0.0f;
 	worldTransformLL_.translation_.y = -4.0f;
+
+	worldTransformRootL_.translation_.x = -2.0f;
+
 
 
 	input_ = Input::GetInstance();
-
-	worldTransform_.UpdateMatrix();
-
-	worldTransformL_.UpdateMatrix();
-
-	worldTransformR_.UpdateMatrix();
-
-	worldTransformLL_.UpdateMatrix();
-
-	worldTransformLR_.UpdateMatrix();
+	
 
 
 };
@@ -128,6 +128,7 @@ void Player::Update() {
 
 	worldTransformLR_.UpdateMatrix();
 
+	worldTransformRootL_.UpdateMatrix();
 
 	// キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
@@ -161,7 +162,7 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_D)) {
 		worldTransform_.rotation_.y += kRotSpeed;
 	}
-
+	worldTransformRootL_.rotation_.x += 0.01f;
 	// ImGui加算用
 	//worldTransform_.translation_.x = inputFloat3[0];
 	//worldTransform_.translation_.y = inputFloat3[1];

@@ -52,6 +52,9 @@ private:
 	WorldTransform worldTransformLL_;
 	WorldTransform worldTransformLR_;
 
+	//付け根左
+	WorldTransform worldTransformRootL_;
+
 
 
 	// モデル
