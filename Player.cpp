@@ -51,8 +51,12 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	worldTransformLL_.Initialize();
 	worldTransformLR_.Initialize();
 
-	//
+	//付け根左
 	worldTransformRootL_.Initialize();
+
+	//付け根右
+	worldTransformRootR_.Initialize();
+
 
 
 	//親子関係
@@ -63,10 +67,14 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	//左足
 	worldTransformLL_.parent_ = &worldTransformRootL_;
 	//右足
-	worldTransformLR_.parent_ = &worldTransform_;
+	worldTransformLR_.parent_ = &worldTransformRootR_;
 
-	//
+	//付け根左
 	worldTransformRootL_.parent_ = &worldTransform_;
+
+	//付け根右
+	worldTransformRootR_.parent_ = &worldTransform_;
+
 
 
 	//位置
@@ -79,13 +87,15 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	worldTransformL_.translation_.x = -2.0f;
 	worldTransformL_.translation_.y = 2.0f;
 	////右足
-	worldTransformLR_.translation_.x = 2.0f;
+	worldTransformLR_.translation_.x = 0.0f;
 	worldTransformLR_.translation_.y = -4.0f;
 	////左足
 	worldTransformLL_.translation_.x = 0.0f;
 	worldTransformLL_.translation_.y = -4.0f;
 
 	worldTransformRootL_.translation_.x = -2.0f;
+
+	worldTransformRootR_.translation_.x = 2.0f;
 
 
 
@@ -130,6 +140,8 @@ void Player::Update() {
 
 	worldTransformRootL_.UpdateMatrix();
 
+	worldTransformRootR_.UpdateMatrix();
+
 	// キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
 
@@ -162,7 +174,19 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_D)) {
 		worldTransform_.rotation_.y += kRotSpeed;
 	}
-	worldTransformRootL_.rotation_.x += 0.01f;
+
+	//左足の動き
+		worldTransformRootL_.rotation_.x += 0.01f;
+	if (worldTransformRootL_.rotation_.x >= 1.0f) {
+		 worldTransformRootL_.rotation_.x  -= 0.01f;
+	}
+
+
+
+	//
+	worldTransformRootR_.rotation_.x -= 0.00f;
+
+
 	// ImGui加算用
 	//worldTransform_.translation_.x = inputFloat3[0];
 	//worldTransform_.translation_.y = inputFloat3[1];
@@ -177,6 +201,7 @@ void Player::Update() {
 	ImGui::Begin("PlayerDebug");
 	ImGui::Text("DebugCamera Toggle : ENTER");
 	ImGui::SliderFloat3("Positions", inputFloat3, -20.0f, 20.0f);
+
 	// ImGui終わり
 	ImGui::End();
 
@@ -213,6 +238,7 @@ void Player::Draw(ViewProjection viewProjection) {
 	modelLL_->Draw(worldTransformLL_, viewProjection, textureHandle_);
 
 	modelLR_->Draw(worldTransformLR_, viewProjection, textureHandle_);
+
 
 	// 弾描画
 	/* if (bullet_) {
