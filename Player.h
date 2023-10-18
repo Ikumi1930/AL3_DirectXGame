@@ -45,6 +45,8 @@ public:
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
+	//頭のワールド変換データ
+	WorldTransform worldTransformHead_;
 	//手のワールド変換データ
 	WorldTransform worldTransformL_;
 	WorldTransform worldTransformR_;
@@ -58,10 +60,17 @@ private:
 	//付け根右
 	WorldTransform worldTransformRootR_;
 
+	//武器
+	WorldTransform worldTransformWeaPon_;
+
+
+
 
 
 	// モデル
 	Model* model_ = nullptr;
+	//頭
+	Model* modelHead_ = nullptr;
 	//手
 	Model* modelL_ = nullptr;
 	Model* modelR_ = nullptr;
@@ -70,6 +79,8 @@ private:
 	Model* modelLL_ = nullptr;
 	Model* modelLR_ = nullptr;
 
+	//武器
+	Model* modelWeapon_ = nullptr;
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
