@@ -39,6 +39,11 @@ public:
 
 	WorldTransform& GetWorldMatrix() { return worldTransform_; }
 
+	// 浮遊ギミック初期化
+	void InitializeFloatingGimmick();
+	void UpdateFloatingGimmick();
+
+
 	// デストラクタ
 	~Player();
 
@@ -93,5 +98,7 @@ private:
 	// 弾
 	std::list<PlayerBullet*> bullets_;
 
+	float floatingParameter_ = 0.0f;
+	
 	int count = 0;
 };

@@ -7,6 +7,35 @@ Player::~Player() {
 	}
 }
 
+void Player::InitializeFloatingGimmick() { 
+	floatingParameter_ = 0.0f;
+
+
+
+}
+
+void Player::UpdateFloatingGimmick() { 
+	//浮遊移動のサイクル
+	const uint16_t period = 12;
+
+	//1フレームでのパラメーター加算値
+	const float step = 2.0f * M_PI / period;
+
+	//パラメータを1ステップ分加算
+	floatingParameter_ += step;
+
+	//2πを越えたら0に戻す
+	floatingParameter_ = std::fmod(floatingParameter_, 2.0f * M_PI);
+
+	//浮遊の振幅＜ｍ＞
+	const float SW = 2;
+
+	//浮遊を座標に反映
+	worldTransform_.translation_.y = std::sin(floatingParameter_) * SW;
+
+
+}
+
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE)) {
 		if (count == 0) {
@@ -120,6 +149,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	worldTransformWeaPon_.scale_.y = 5.0f;
 
 	input_ = Input::GetInstance();
+	InitializeFloatingGimmick();
 };
 
 void Player::OnCollision() {}
@@ -214,6 +244,10 @@ void Player::Update() {
 	// アフィン変換行列の作成
 	worldTransform_.matWorld_ = Math::MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+
+
+	UpdateFloatingGimmick();
+
 
 	// ImGuiスライダー
 #ifdef _DEBUG
