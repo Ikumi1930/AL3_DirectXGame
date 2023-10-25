@@ -16,7 +16,7 @@ void Player::InitializeFloatingGimmick() {
 
 void Player::UpdateFloatingGimmick() { 
 	//浮遊移動のサイクル
-	const uint16_t period = 12;
+	const uint16_t period = 60;
 
 	//1フレームでのパラメーター加算値
 	const float step = 2.0f * M_PI / period;
