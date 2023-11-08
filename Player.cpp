@@ -16,7 +16,7 @@ void Player::InitializeFloatingGimmick() {
 
 void Player::UpdateFloatingGimmick() { 
 	//浮遊移動のサイクル
-	const uint16_t period = 60;
+	const uint16_t period = 30;
 
 	//1フレームでのパラメーター加算値
 	const float step = 2.0f * M_PI / period;
@@ -28,10 +28,11 @@ void Player::UpdateFloatingGimmick() {
 	floatingParameter_ = std::fmod(floatingParameter_, 2.0f * M_PI);
 
 	//浮遊の振幅＜ｍ＞
-	const float SW = 2;
+	const float SW = 0.5f;
 
 	//浮遊を座標に反映
-	worldTransform_.translation_.y = std::sin(floatingParameter_) * SW;
+	worldTransformR_.translation_.y = std::sin(floatingParameter_) * SW;
+	worldTransformL_.translation_.y = std::sin(floatingParameter_) * SW;
 
 
 }
@@ -99,21 +100,21 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	// 親子関係
 	// 頭
-	worldTransformHead_.parent_ = &worldTransform_;
+	//worldTransformHead_.parent_ = &worldTransform_;
 	// 左手
-	worldTransformL_.parent_ = &worldTransform_;
+	//worldTransformL_.parent_ = &worldTransform_;
 	// 右手
-	worldTransformR_.parent_ = &worldTransform_;
+	//worldTransformR_.parent_ = &worldTransform_;
 	// 左足
-	worldTransformLL_.parent_ = &worldTransformRootL_;
+	//worldTransformLL_.parent_ = &worldTransformRootL_;
 	// 右足
-	worldTransformLR_.parent_ = &worldTransformRootR_;
+	//worldTransformLR_.parent_ = &worldTransformRootR_;
 
 	// 付け根左
-	worldTransformRootL_.parent_ = &worldTransform_;
+	//worldTransformRootL_.parent_ = &worldTransform_;
 
 	// 付け根右
-	worldTransformRootR_.parent_ = &worldTransform_;
+	//worldTransformRootR_.parent_ = &worldTransform_;
 
 	//武器
 	worldTransformWeaPon_.parent_ = &worldTransformR_;
@@ -126,18 +127,24 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	//	頭
 	worldTransformHead_.translation_.x = 0.0;
 	worldTransformHead_.translation_.y = 3.0f;
+	worldTransformHead_.translation_.z =- 50.0f;
 	// 右手
 	worldTransformR_.translation_.x = 2.0f;
 	worldTransformR_.translation_.y = 2.0f;
+	worldTransformR_.translation_.z = -50.0f;
 	// 左手
 	worldTransformL_.translation_.x = -2.0f;
 	worldTransformL_.translation_.y = 2.0f;
+	worldTransformL_.translation_.z = -50.0f;
 	////右足
-	worldTransformLR_.translation_.x = 0.0f;
+	worldTransformLR_.translation_.x = 2.0f;
 	worldTransformLR_.translation_.y = -4.0f;
+	worldTransformLR_.translation_.z = -50.0f;
+
 	////左足
-	worldTransformLL_.translation_.x = 0.0f;
+	worldTransformLL_.translation_.x = -2.0f;
 	worldTransformLL_.translation_.y = -4.0f;
+	worldTransformLL_.translation_.z = -50.0f;
 
 	worldTransformRootL_.translation_.x = -2.0f;
 
