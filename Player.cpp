@@ -29,10 +29,16 @@ void Player::UpdateFloatingGimmick() {
 
 	//浮遊の振幅＜ｍ＞
 	const float SW = 0.5f;
+	
 
 	//浮遊を座標に反映
-	worldTransformR_.translation_.y = std::sin(floatingParameter_) * SW;
-	worldTransformL_.translation_.y = std::sin(floatingParameter_) * SW;
+
+	//worldTransformHead_.translation_.y = std::sin(floatingParameter_) * SW;
+
+	 worldTransform_.translation_.y = std::sin(floatingParameter_) * SW;
+
+	worldTransformR_.translation_.y = std::cos(floatingParameter_) * SW;
+	worldTransformL_.translation_.y = std::cos(floatingParameter_) * SW;
 
 
 }
@@ -100,7 +106,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	// 親子関係
 	// 頭
-	//worldTransformHead_.parent_ = &worldTransform_;
+	worldTransformHead_.parent_ = &worldTransform_;
 	// 左手
 	//worldTransformL_.parent_ = &worldTransform_;
 	// 右手
@@ -127,13 +133,13 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	//	頭
 	worldTransformHead_.translation_.x = 0.0;
 	worldTransformHead_.translation_.y = 3.0f;
-	worldTransformHead_.translation_.z =- 50.0f;
+	//worldTransformHead_.translation_.z =- 50.0f;
 	// 右手
-	worldTransformR_.translation_.x = 2.0f;
+	worldTransformR_.translation_.x = 3.0f;
 	worldTransformR_.translation_.y = 2.0f;
 	worldTransformR_.translation_.z = -50.0f;
 	// 左手
-	worldTransformL_.translation_.x = -2.0f;
+	worldTransformL_.translation_.x = -3.0f;
 	worldTransformL_.translation_.y = 2.0f;
 	worldTransformL_.translation_.z = -50.0f;
 	////右足
