@@ -1,6 +1,9 @@
 #pragma once
 #include "BaseScene.h"
 #include "Input.h"
+#include "Sprite.h"
+#include "TextureManager.h"
+#include "DirectXCommon.h"
 
 class TitleScene  : public BaseScene {
 public:
@@ -15,5 +18,11 @@ public:
 
 private:
 	Input* input_;
+
+	Sprite* sprite_;
+
+	TextureManager* texture_;
+
+	uint32_t uvChacker_;
 
 };

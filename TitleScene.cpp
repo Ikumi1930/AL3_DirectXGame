@@ -1,9 +1,21 @@
-#include "TitleScene.h"
+﻿#include "TitleScene.h"
 
 void TitleScene::Initialize() {
 
 	input_ = Input::GetInstance();
 	input_->Initialize();
+
+	sprite_ = new Sprite();
+	sprite_->Initialize();
+
+	TextureManager::GetInstance()->Initialize(DirectXCommon::GetInstance()->GetDevice());
+
+	uvChacker_ = TextureManager::Load("uvChecker.png");
+
+	sprite_->Create(uvChacker_, {0.0f, 0.0f});
+
+	sprite_->SetSize({1280.0f, 720.0f});
+	sprite_->SetColor({0.0f, 0.0f, 0.0f, 1.0f});
 
 }
 
@@ -17,9 +29,15 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
+	// コマンドリストの取得
+	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
+
+	sprite_->PreDraw(commandList);
+
+	sprite_->Draw();
+
+	sprite_->PostDraw();
 
 }
 
-void TitleScene::Finalize() {
-
-}
+void TitleScene::Finalize() { delete sprite_; }
