@@ -25,4 +25,8 @@ private:
 
 	uint32_t uvChacker_;
 
+	Vector4 material;
+
+	bool isPushKey = false;
+
 };
