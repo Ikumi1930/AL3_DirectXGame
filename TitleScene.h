@@ -29,4 +29,6 @@ private:
 
 	bool isPushKey = false;
 
+	int spriteChangeTimer = 0;
+
 };

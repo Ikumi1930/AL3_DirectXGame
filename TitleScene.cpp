@@ -20,18 +20,25 @@ void TitleScene::Initialize() {
 
 	sprite_[1]->Create(uvChacker_, {0.0f, 0.0f});
 	sprite_[1]->SetSize({1280.0f, 720.0f});
-	sprite_[1]->SetColor({1.0f, 1.0f, 1.0f, 1.0f});
+	sprite_[1]->SetColor({1.0f, 0.0f, 1.0f, 1.0f});
 
 	sprite_[2]->Create(uvChacker_, {0.0f, 0.0f});
 	sprite_[2]->SetSize({1280.0f, 720.0f});
 	sprite_[2]->SetColor({0.0f, 0.0f, 0.0f, 0.0f});
 
 	isPushKey = false;
+	spriteChangeTimer = 0;
 
 }
 
 void TitleScene::Update() { 
 	input_->Update();
+
+	spriteChangeTimer++;
+
+	if (spriteChangeTimer >= 90) {
+		spriteChangeTimer = 0;
+	}
 
 	if (input_->PushKey(DIK_RETURN)) {
 		isPushKey = true;
@@ -54,7 +61,11 @@ void TitleScene::Draw() {
 	for (int i = 0; i <= 3; i++) {
 		sprite_[i]->PreDraw(commandList);
 
-		sprite_[0]->Draw();
+		if (spriteChangeTimer <= 44) {
+			sprite_[0]->Draw();
+		} else if (spriteChangeTimer >= 45) {
+			sprite_[1]->Draw();
+		}
 
 		if (isPushKey == true) {
 			sprite_[2]->Draw();
