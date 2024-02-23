@@ -10,6 +10,9 @@
 	worldTransform_.scale_ = {300.0f, 300.0f, 300.0f};
 }
 
-void Skydome::Update() { worldTransform_.UpdateMatrix(); }
+void Skydome::Update() {
+	worldTransform_.UpdateMatrix();
+	worldTransform_.rotation_.y += 0.001f;
+}
 
 void Skydome::Draw(ViewProjection& view) { model_->Draw(worldTransform_, view); }

@@ -56,7 +56,7 @@ void GameScene::Initialize() {
 	skydome_->Initialize(modelSkydome_, {0, 80, 0});
 
 	railCamera_ = new RailCamera();
-	railCamera_->Initialize({0, 0, -100.0f}, player_->GetWorldMatrix().rotation_);
+	railCamera_->Initialize({0, 0, -10.0f}, player_->GetWorldMatrix().rotation_);
 
 	player_->SetParent(&railCamera_->GetWorldTransform());
 
