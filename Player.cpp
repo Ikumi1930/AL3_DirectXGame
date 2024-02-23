@@ -105,6 +105,8 @@ void Player::Update(ViewProjection& viewProjection) {
 	});
 
 	worldTransform_.TransferMatrix();
+	worldTransform_.rotation_.y += 0.01f;
+
 	// キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
 
