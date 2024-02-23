@@ -5,24 +5,21 @@ void TitleScene::Initialize() {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
-	for (int i = 0; i <= 3; i++) {
-		sprite_[i] = new Sprite();
-		sprite_[i]->Initialize();
-	}
-
 	TextureManager::GetInstance()->Initialize(DirectXCommon::GetInstance()->GetDevice());
 
+	titlepng[0] = TextureManager::Load("Clear1.png");
+	titlepng[1] = TextureManager::Load("Clear2.png");
 	uvChacker_ = TextureManager::Load("uvChecker.png");
 
-	sprite_[0]->Create(uvChacker_, {0.0f, 0.0f});
+	sprite_[0].reset(sprite_[0]->Create(titlepng[0], {0.0f, 0.0f}));
 	sprite_[0]->SetSize({1280.0f, 720.0f});
 	sprite_[0]->SetColor({1.0f, 1.0f, 1.0f, 1.0f});
 
-	sprite_[1]->Create(uvChacker_, {0.0f, 0.0f});
+	sprite_[1].reset(sprite_[1]->Create(titlepng[1], {0.0f, 0.0f}));
 	sprite_[1]->SetSize({1280.0f, 720.0f});
-	sprite_[1]->SetColor({1.0f, 0.0f, 1.0f, 1.0f});
+	sprite_[1]->SetColor({1.0f, 1.0f, 1.0f, 1.0f});
 
-	sprite_[2]->Create(uvChacker_, {0.0f, 0.0f});
+	sprite_[2].reset(sprite_[2]->Create(uvChacker_, {0.0f, 0.0f}));
 	sprite_[2]->SetSize({1280.0f, 720.0f});
 	sprite_[2]->SetColor({0.0f, 0.0f, 0.0f, 0.0f});
 
@@ -58,7 +55,7 @@ void TitleScene::Update() {
 void TitleScene::Draw() {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = DirectXCommon::GetInstance()->GetCommandList();
-	for (int i = 0; i <= 3; i++) {
+	for (int i = 0; i <= 2; i++) {
 		sprite_[i]->PreDraw(commandList);
 
 		if (spriteChangeTimer <= 44) {
@@ -77,7 +74,5 @@ void TitleScene::Draw() {
 }
 
 void TitleScene::Finalize() { 
-	for (int i = 0; i < 3; i++) {
-		delete sprite_[i];
-	}
+	
 }
