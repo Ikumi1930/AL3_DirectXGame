@@ -14,11 +14,12 @@
 #include <RailCamera.h>
 #include <Skydome.h>
 #include <sstream>
+#include "SceneManager.h"
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene {
+class GameScene : public BaseScene {
 
 public: // メンバ関数
 	/// <summary>
@@ -34,23 +35,24 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize() override;
 
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw() override;
 
 	/// <summary>
 	/// 衝突判定と応答
 	/// </summary>
-
 	void CheckAllCollisions();
+
+	void Finalize() override;
 
 	void AddEnemyBullet(EnemyBullet* enemyBullet);
 
