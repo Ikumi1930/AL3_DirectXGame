@@ -217,7 +217,7 @@ void GameScene::CheckAllCollisions() {
 
 #pragma region 自弾と敵キャラ
 
-	for (PlayerBullet* playerBullet : playerBullets) {
+	/*for (PlayerBullet* playerBullet : playerBullets) {
 		posB = playerBullet->GetWorldPosition();
 		for (EnemyBullet* enemyBullet : enemyBullets_) {
 			posA = enemyBullet->GetWorldPosition();
@@ -233,7 +233,7 @@ void GameScene::CheckAllCollisions() {
 				enemyBullet->OnCollision();
 			}
 		}
-	}
+	}*/
 #pragma endregion
 
 #pragma region 自弾と敵キャラ
@@ -250,7 +250,7 @@ void GameScene::CheckAllCollisions() {
 			float playerRad = 2.5f;
 			float enemyRad = 2.5f;
 			if (judge <= (playerRad + enemyRad) * (playerRad + enemyRad)) {
-				player_->OnCollision();
+				enemy->OnCollision();
 				bullet->OnCollision();
 			}
 		}

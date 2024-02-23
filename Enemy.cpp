@@ -148,3 +148,5 @@ void Enemy::Draw(const ViewProjection& view) {
 		bullet->Draw(view);
 	}
 }
+
+void Enemy::OnCollision() { isDead_ = true; }
