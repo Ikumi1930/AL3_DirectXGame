@@ -19,7 +19,7 @@ public:
 private:
 	Input* input_;
 
-	Sprite* sprite_;
+	Sprite* sprite_[3];
 
 	TextureManager* texture_;
 
