@@ -68,9 +68,11 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	Sprite* sprite_;
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
+	uint32_t uvChacker_ = 0;
 
 	// 3Dモデルデータ
 	Model* model_ = nullptr;
@@ -98,6 +100,9 @@ private: // メンバ変数
 	std::stringstream enemyPopCommands;
 	bool isWait_ = false;
 	int32_t waitTimer_ = 0;
+
+	bool isChange;
+	Vector4 spriteMaterial;
 
 	/// <summary>
 	/// ゲームシーン用

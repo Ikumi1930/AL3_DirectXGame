@@ -24,6 +24,7 @@ void GameScene::Finalize() {
 	for (EnemyBullet* bullet : enemyBullets_) {
 		delete bullet;
 	}
+	
 }
 
 void GameScene::Initialize() {
@@ -67,70 +68,91 @@ void GameScene::Initialize() {
 	// TextureManager::Load("beam.png");
 
 	LoadEnemyPopData();
+
+	uvChacker_ = TextureManager::Load("uvChecker.png");
+
+	sprite_ = Sprite::Create(uvChacker_, {0.0f, 0.0f});
+	sprite_->SetSize({1280.0f, 720.0f});
+	sprite_->SetColor({0.0f, 0.0f, 0.0f, 1.0f});
+
+	isChange = true;
+
+	spriteMaterial = {0.0f, 0.0f, 0.0f, 1.0f};
+
 }
 
 void GameScene::Update() {
 	// 自キャラの更新
+	if (isChange == true) {
+		spriteMaterial.w -= 0.01f;
+		sprite_->SetColor({0.0f, 0.0f, 0.0f, spriteMaterial.w});
+	}
 
-	player_->Update(viewProjection_);
+	if (sprite_->GetColor().w <= 0.0f) {
+		isChange = false;
+	}
 
-	// enemy_->Update();
+	if (isChange == false) {
+		player_->Update(viewProjection_);
 
-	UpDateEnemyPopCommands();
+		// enemy_->Update();
 
-	enemys_.remove_if([](Enemy* enemy) {
-		if (enemy->IsDead()) {
-			delete enemy;
-			return true;
+		UpDateEnemyPopCommands();
+
+		enemys_.remove_if([](Enemy* enemy) {
+			if (enemy->IsDead()) {
+				delete enemy;
+				return true;
+			}
+			return false;
+		});
+
+		for (Enemy* enemy : enemys_) {
+			enemy->Update();
 		}
-		return false;
-	});
 
-	for (Enemy* enemy : enemys_) {
-		enemy->Update();
-	}
+		enemyBullets_.remove_if([](EnemyBullet* bullet) {
+			if (bullet->IsDead()) {
+				delete bullet;
+				return true;
+			}
+			return false;
+		});
 
-	enemyBullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
+		for (EnemyBullet* bullet : enemyBullets_) {
+			bullet->Update();
 		}
-		return false;
-	});
 
-	for (EnemyBullet* bullet : enemyBullets_) {
-		bullet->Update();
+		CheckAllCollisions();
+
+		skydome_->Update();
+
+		// #ifdef _DEBUG
+
+		if (input_->TriggerKey(DIK_RETURN) && isDebugCameraActive_ == false) {
+			isDebugCameraActive_ = true;
+		} else if (input_->TriggerKey(DIK_RETURN) && isDebugCameraActive_ == true) {
+			isDebugCameraActive_ = false;
+		}
+		// カメラの処理
+		if (isDebugCameraActive_ == true) {
+			debugCamera_->Update();
+			viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+			viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+			// ビュープロジェクション行列の転送
+			viewProjection_.TransferMatrix();
+		} else {
+			railCamera_->Updata();
+			viewProjection_.matView = railCamera_->GetViewProjection().matView;
+			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+			viewProjection_.TransferMatrix();
+			// ビュープロジェクション行列の更新と転送
+			// viewProjection_.UpdateMatrix();
+		}
+		// #endif
+
+		// debugCamera_->Update();
 	}
-
-	CheckAllCollisions();
-
-	skydome_->Update();
-
-	// #ifdef _DEBUG
-
-	if (input_->TriggerKey(DIK_RETURN) && isDebugCameraActive_ == false) {
-		isDebugCameraActive_ = true;
-	} else if (input_->TriggerKey(DIK_RETURN) && isDebugCameraActive_ == true) {
-		isDebugCameraActive_ = false;
-	}
-	// カメラの処理
-	if (isDebugCameraActive_ == true) {
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		// ビュープロジェクション行列の転送
-		viewProjection_.TransferMatrix();
-	} else {
-		railCamera_->Updata();
-		viewProjection_.matView = railCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-		viewProjection_.TransferMatrix();
-		// ビュープロジェクション行列の更新と転送
-		// viewProjection_.UpdateMatrix();
-	}
-	// #endif
-
-	// debugCamera_->Update();
 }
 
 void GameScene::Draw() {
@@ -145,6 +167,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+	/// 
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -160,14 +183,17 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	player_->Draw(viewProjection_);
+	if (isChange == false) {
 
-	for (Enemy* enemy : enemys_) {
-		enemy->Draw(viewProjection_);
-	}
+		player_->Draw(viewProjection_);
 
-	for (EnemyBullet* bullet : enemyBullets_) {
-		bullet->Draw(viewProjection_);
+		for (Enemy* enemy : enemys_) {
+			enemy->Draw(viewProjection_);
+		}
+
+		for (EnemyBullet* bullet : enemyBullets_) {
+			bullet->Draw(viewProjection_);
+		}
 	}
 
 	skydome_->Draw(viewProjection_);
@@ -185,6 +211,10 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player_->DrawUI();
+
+	if (isChange == true) {
+		sprite_->Draw();
+	}
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
