@@ -92,6 +92,8 @@ void GameScene::Update() {
 		isChange = false;
 	}
 
+	skydome_->Update();
+
 	if (isChange == false) {
 		player_->Update(viewProjection_);
 
@@ -124,8 +126,6 @@ void GameScene::Update() {
 		}
 
 		CheckAllCollisions();
-
-		skydome_->Update();
 
 		// #ifdef _DEBUG
 
