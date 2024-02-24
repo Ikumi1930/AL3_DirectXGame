@@ -7,8 +7,8 @@ void TitleScene::Initialize() {
 
 	TextureManager::GetInstance()->Initialize(DirectXCommon::GetInstance()->GetDevice());
 
-	titlepng[0] = TextureManager::Load("Clear1.png");
-	titlepng[1] = TextureManager::Load("Clear2.png");
+	titlepng[0] = TextureManager::Load("AnpClear1.png");
+	titlepng[1] = TextureManager::Load("AnpClear2.png");
 	uvChacker_ = TextureManager::Load("uvChecker.png");
 
 	sprite_[0].reset(sprite_[0]->Create(titlepng[0], {0.0f, 0.0f}));
