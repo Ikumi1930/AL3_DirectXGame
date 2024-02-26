@@ -34,6 +34,9 @@ public:
 
 	// 衝突を検証したら呼び出される関数
 	void OnCollision();
+
+	bool IsAlive() { return isAlive_; }
+
 	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
 
 	void SetParent(const WorldTransform* parent);
@@ -67,6 +70,8 @@ private:
 
 	bool isControl = false;
 	bool isAttack = false;
+
+	bool isAlive_ = true;
 
 	WorldTransform worldTransform3DReticle_;
 

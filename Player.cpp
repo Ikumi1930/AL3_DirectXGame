@@ -80,7 +80,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	    {0.5f, 0.5f});
 };
 
-void Player::OnCollision() {}
+void Player::OnCollision() { isAlive_ = false; }
 
 Vector3 Player::GetWorldPosition() {
 	Vector3 worldPos;
@@ -212,7 +212,9 @@ void Player::Update(ViewProjection& viewProjection) {
 
 void Player::Draw(ViewProjection viewProjection) {
 
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	if (isAlive_ == true) {
+		model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	}
 	model_->Draw(worldTransform3DReticle_, viewProjection, textureHandle_);
 	// 弾描画
 	/* if (bullet_) {

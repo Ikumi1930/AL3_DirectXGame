@@ -6,9 +6,7 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {
-	
-}
+GameScene::~GameScene() {}
 
 void GameScene::Finalize() {
 	delete model_;
@@ -24,7 +22,6 @@ void GameScene::Finalize() {
 	for (EnemyBullet* bullet : enemyBullets_) {
 		delete bullet;
 	}
-	
 }
 
 void GameScene::Initialize() {
@@ -78,7 +75,6 @@ void GameScene::Initialize() {
 	isChange = true;
 
 	spriteMaterial = {0.0f, 0.0f, 0.0f, 1.0f};
-
 }
 
 void GameScene::Update() {
@@ -167,7 +163,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-	/// 
+	///
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -185,7 +181,9 @@ void GameScene::Draw() {
 
 	if (isChange == false) {
 
-		player_->Draw(viewProjection_);
+		if (player_->IsAlive() == true) {
+			player_->Draw(viewProjection_);
+		}
 
 		for (Enemy* enemy : enemys_) {
 			enemy->Draw(viewProjection_);
@@ -210,7 +208,7 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
-	player_->DrawUI();
+	//player_->DrawUI();
 
 	if (isChange == true) {
 		sprite_->Draw();
@@ -229,13 +227,34 @@ void GameScene::CheckAllCollisions() {
 	// 自弾リストの取得
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	// 敵弾リストの取得
-	// const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+	for (Enemy* enemy : enemys_) {
+		const std::list<EnemyBullet*>& enemyBullets = enemy->GetBullets();
 
 #pragma region 自キャラと敵弾
-	posA = player_->GetWorldPosition();
+		posA = player_->GetWorldPosition();
 
-	for (EnemyBullet* bullet : enemyBullets_) {
-		posB = bullet->GetWorldPosition();
+		for (EnemyBullet* bullet : enemyBullets) {
+			posB = bullet->GetWorldPosition();
+
+			float judge = (posA.x - posB.x) * (posA.x - posB.x) +
+			              (posA.y - posB.y) * (posA.y - posB.y) +
+			              (posA.z - posB.z) * (posA.z - posB.z);
+
+			float playerRad = 2.5f;
+			float enemyRad = 2.5f;
+			if (judge <= (playerRad + enemyRad) * (playerRad + enemyRad)) {
+				player_->OnCollision();
+				bullet->OnCollision();
+			}
+		}
+	}
+#pragma endregion
+
+#pragma region 自弾と敵キャラ
+	/*posA = player_->GetWorldPosition();
+
+	for (EnemyBullet* enemyBullet : enemyBullets_) {
+		posB = enemyBullet->GetWorldPosition();
 
 		float judge = (posB.x - posA.x) * (posB.x - posA.x) +
 		              (posB.y - posA.y) * (posB.y - posA.y) + (posB.z - posA.z) * (posB.z - posA.z);
@@ -244,28 +263,7 @@ void GameScene::CheckAllCollisions() {
 		float enemyRad = 2.5f;
 		if (judge <= (playerRad + enemyRad) * (playerRad + enemyRad)) {
 			player_->OnCollision();
-			bullet->OnCollision();
-		}
-	}
-#pragma endregion
-
-#pragma region 自弾と敵キャラ
-
-	/*for (PlayerBullet* playerBullet : playerBullets) {
-		posB = playerBullet->GetWorldPosition();
-		for (EnemyBullet* enemyBullet : enemyBullets_) {
-			posA = enemyBullet->GetWorldPosition();
-
-			float judge = (posB.x - posA.x) * (posB.x - posA.x) +
-			              (posB.y - posA.y) * (posB.y - posA.y) +
-			              (posB.z - posA.z) * (posB.z - posA.z);
-
-			float playerRad = 2.5f;
-			float enemyRad = 2.5f;
-			if (judge <= (playerRad + enemyRad) * (playerRad + enemyRad)) {
-				playerBullet->OnCollision();
-				enemyBullet->OnCollision();
-			}
+			enemyBullet->OnCollision();
 		}
 	}*/
 #pragma endregion
