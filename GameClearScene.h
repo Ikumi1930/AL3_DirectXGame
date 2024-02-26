@@ -18,17 +18,18 @@ public:
 private:
 	Input* input_;
 
-	std::unique_ptr<Sprite> sprite_[3];
+	std::unique_ptr<Sprite> sprite_[4];
 
 	TextureManager* texture_;
 
 	uint32_t uvChacker_;
 	uint32_t titlepng[2];
 
-	Vector4 material;
+	Vector4 material[2];
 
 	bool isPushKey = false;
 
 	int spriteChangeTimer = 0;
 
+	bool isChange;
 };

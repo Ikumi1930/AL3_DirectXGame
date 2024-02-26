@@ -6,8 +6,8 @@ void GameOverScene::Initialize() {
 
 	TextureManager::GetInstance()->Initialize(DirectXCommon::GetInstance()->GetDevice());
 
-	titlepng[0] = TextureManager::Load("SusumeEnemyO1.png");
-	titlepng[1] = TextureManager::Load("SusumeEnemyO3.png");
+	titlepng[0] = TextureManager::Load("Gameover1.png");
+	titlepng[1] = TextureManager::Load("Gameover2.png");
 	uvChacker_ = TextureManager::Load("uvChecker.png");
 
 	sprite_[0].reset(sprite_[0]->Create(titlepng[0], {0.0f, 0.0f}));

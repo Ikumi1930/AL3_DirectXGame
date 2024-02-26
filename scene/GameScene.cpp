@@ -165,7 +165,7 @@ void GameScene::Update() {
 
 		// debugCamera_->Update();
 
-		if (clearTimer >= 3000 && isClearChange == false && isOverChange == false) {
+		if (clearTimer >= 420 && isClearChange == false && isOverChange == false) {
 			isClearChange = true;
 		}
 
