@@ -164,6 +164,16 @@ void GameScene::Update() {
 			sprite_[1]->SetColor({0.0f, 0.0f, 0.0f, spriteMaterial[1].w});
 			spriteMaterial[1].w += 0.01f;
 
+			enemys_.remove_if([](Enemy* enemy) {
+					delete enemy;
+					return true;
+			});
+
+			enemyBullets_.remove_if([](EnemyBullet* bullet) {
+					delete bullet;
+					return true;
+			});
+
 			if (spriteMaterial[1].w >= 1.0f) {
 				sceneNo = OVER;
 			}
