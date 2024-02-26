@@ -31,8 +31,10 @@ void ImGuiManager::Initialize(WinApp* winApp, DirectXCommon* dxCommon) {
 	// プラットフォームとレンダラーのバックエンドを設定する
 	ImGui_ImplWin32_Init(winApp->GetHwnd());
 	ImGui_ImplDX12_Init(
-	    dxCommon_->GetDevice(), static_cast<int>(dxCommon_->GetBackBufferCount()),
-	    DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, srvHeap_.Get(),
+	    dxCommon_->GetDevice(), 
+		static_cast<int>(dxCommon_->GetBackBufferCount()),
+	    DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
+		srvHeap_.Get(),
 	    srvHeap_->GetCPUDescriptorHandleForHeapStart(),
 	    srvHeap_->GetGPUDescriptorHandleForHeapStart());
 

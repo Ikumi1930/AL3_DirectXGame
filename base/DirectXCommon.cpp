@@ -350,7 +350,8 @@ void DirectXCommon::InitializeCommand() {
 	assert(SUCCEEDED(result));
 }
 
-void DirectXCommon::CreateFinalRenderTargets() {
+void DirectXCommon::CreateFinalRenderTargets()
+{
 	HRESULT result = S_FALSE;
 
 	DXGI_SWAP_CHAIN_DESC swcDesc = {};
