@@ -76,12 +76,19 @@ void GameScene::Initialize() {
 	sprite_[1]->SetSize({1280.0f, 720.0f});
 	sprite_[1]->SetColor({0.0f, 0.0f, 0.0f, 0.0f});
 
+	sprite_[2] = Sprite::Create(uvChacker_, {0.0f, 0.0f});
+	sprite_[2]->SetSize({1280.0f, 720.0f});
+	sprite_[2]->SetColor({0.0f, 0.0f, 0.0f, 0.0f});
+
 	isChange = true;
 	isOverChange = false;
 	isClearChange = false;
 
 	spriteMaterial[0] = {0.0f, 0.0f, 0.0f, 1.0f};
 	spriteMaterial[1] = {0.0f, 0.0f, 0.0f, 0.0f};
+	spriteMaterial[2] = {0.0f, 0.0f, 0.0f, 0.0f};
+
+	clearTimer = 0;
 }
 
 void GameScene::Update() {
@@ -98,6 +105,8 @@ void GameScene::Update() {
 	skydome_->Update();
 
 	if (isChange == false) {
+		clearTimer++;
+
 		player_->Update(viewProjection_);
 
 		// enemy_->Update();
@@ -156,8 +165,28 @@ void GameScene::Update() {
 
 		// debugCamera_->Update();
 
+		if (clearTimer >= 3000 && isClearChange == false && isOverChange == false) {
+			isClearChange = true;
+		}
+
 		if (isClearChange == true) {
-			
+			sprite_[2]->SetColor({0.0f, 0.0f, 0.0f, spriteMaterial[1].w});
+			spriteMaterial[2].w += 0.01f;
+
+			enemys_.remove_if([](Enemy* enemy) {
+				delete enemy;
+				return true;
+			});
+
+			enemyBullets_.remove_if([](EnemyBullet* bullet) {
+				delete bullet;
+				return true;
+			});
+
+			if (spriteMaterial[2].w >= 1.0f) {
+				sceneNo = CLEAR;
+			}
+
 		}
 
 		if (isOverChange == true) {
@@ -248,6 +277,10 @@ void GameScene::Draw() {
 
 	if (isChange == false && isOverChange == true && isClearChange == false) {
 		sprite_[1]->Draw();
+	}
+
+	if (isChange == false && isOverChange == false && isClearChange == true) {
+		sprite_[2]->Draw();
 	}
 
 	// スプライト描画後処理

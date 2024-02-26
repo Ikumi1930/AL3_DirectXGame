@@ -107,6 +107,8 @@ private: // メンバ変数
 	bool isOverChange;
 	bool isClearChange;
 
+	int clearTimer = 0;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

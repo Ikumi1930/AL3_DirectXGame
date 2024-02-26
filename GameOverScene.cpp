@@ -22,30 +22,52 @@ void GameOverScene::Initialize() {
 	sprite_[2]->SetSize({1280.0f, 720.0f});
 	sprite_[2]->SetColor({0.0f, 0.0f, 0.0f, 0.0f});
 
+	sprite_[3].reset(sprite_[2]->Create(uvChacker_, {0.0f, 0.0f}));
+	sprite_[3]->SetSize({1280.0f, 720.0f});
+	sprite_[3]->SetColor({0.0f, 0.0f, 0.0f, 1.0f});
+
 	isPushKey = false;
 	spriteChangeTimer = 0;
+
+	material[0] = {0.0f, 0.0f, 0.0f, 0.0f};
+	material[1] = {0.0f, 0.0f, 0.0f, 1.0f};
+
+	isChange = true;
+
 }
 
 void GameOverScene::Update() {
 	input_->Update();
 
-	spriteChangeTimer++;
-
-	if (spriteChangeTimer >= 90) {
-		spriteChangeTimer = 0;
+	if (isChange == true) {
+		material[1].w -= 0.01f;
+		sprite_[3]->SetColor({0.0f, 0.0f, 0.0f, material[1].w});
 	}
 
-	if (input_->PushKey(DIK_RETURN)) {
-		isPushKey = true;
+	if (sprite_[3]->GetColor().w <= 0.0f) {
+		isChange = false;
 	}
 
-	if (isPushKey == true) {
-		material.w += 0.01f;
-		sprite_[2]->SetColor({0.0f, 0.0f, 0.0f, material.w});
-	}
+	if (isChange == false) {
 
-	if (sprite_[2]->GetColor().w >= 1.0f) {
-		sceneNo = TITLE;
+		spriteChangeTimer++;
+
+		if (spriteChangeTimer >= 90) {
+			spriteChangeTimer = 0;
+		}
+
+		if (input_->PushKey(DIK_RETURN)) {
+			isPushKey = true;
+		}
+
+		if (isPushKey == true) {
+			material[0].w += 0.01f;
+			sprite_[2]->SetColor({0.0f, 0.0f, 0.0f, material[0].w});
+		}
+
+		if (sprite_[2]->GetColor().w >= 1.0f) {
+			sceneNo = TITLE;
+		}
 	}
 }
 
@@ -55,14 +77,21 @@ void GameOverScene::Draw() {
 	for (int i = 0; i <= 2; i++) {
 		sprite_[i]->PreDraw(commandList);
 
-		if (spriteChangeTimer <= 44) {
-			sprite_[0]->Draw();
-		} else if (spriteChangeTimer >= 45) {
-			sprite_[1]->Draw();
+		if (isChange == true) {
+			sprite_[3]->Draw();
 		}
 
-		if (isPushKey == true) {
-			sprite_[2]->Draw();
+		if (isChange == false) {
+
+			if (spriteChangeTimer <= 44) {
+				sprite_[0]->Draw();
+			} else if (spriteChangeTimer >= 45) {
+				sprite_[1]->Draw();
+			}
+
+			if (isPushKey == true) {
+				sprite_[2]->Draw();
+			}
 		}
 
 		sprite_[i]->PostDraw();
