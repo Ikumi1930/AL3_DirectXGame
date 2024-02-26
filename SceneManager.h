@@ -11,12 +11,14 @@
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include "TitleScene.h"
+#include "GameClearScene.h"
+#include "GameOverScene.h"
 
 class SceneManager{
 private:
 	//シーンを保持するメンバ変数
 	//[]の中はBaseSceneのSCENEの中の数だけ増える
-	std::unique_ptr<BaseScene> sceneArr_[3];
+	std::unique_ptr<BaseScene> sceneArr_[4];
 
 	//どのステージを呼び出すかを管理する変数
 	int currentSceneNo_;//現在のシーン

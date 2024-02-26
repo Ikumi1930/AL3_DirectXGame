@@ -49,9 +49,9 @@ void GameScene::Initialize() {
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 	// 軸方向表示を有効にする
-	AxisIndicator::GetInstance()->SetVisible(true);
+	//AxisIndicator::GetInstance()->SetVisible(true);
 	// アドレス渡し
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	//AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	skydome_ = new Skydome();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
@@ -68,23 +68,30 @@ void GameScene::Initialize() {
 
 	uvChacker_ = TextureManager::Load("uvChecker.png");
 
-	sprite_ = Sprite::Create(uvChacker_, {0.0f, 0.0f});
-	sprite_->SetSize({1280.0f, 720.0f});
-	sprite_->SetColor({0.0f, 0.0f, 0.0f, 1.0f});
+	sprite_[0] = Sprite::Create(uvChacker_, {0.0f, 0.0f});
+	sprite_[0]->SetSize({1280.0f, 720.0f});
+	sprite_[0]->SetColor({0.0f, 0.0f, 0.0f, 1.0f});
+
+	sprite_[1] = Sprite::Create(uvChacker_, {0.0f, 0.0f});
+	sprite_[1]->SetSize({1280.0f, 720.0f});
+	sprite_[1]->SetColor({0.0f, 0.0f, 0.0f, 0.0f});
 
 	isChange = true;
+	isOverChange = false;
+	isClearChange = false;
 
-	spriteMaterial = {0.0f, 0.0f, 0.0f, 1.0f};
+	spriteMaterial[0] = {0.0f, 0.0f, 0.0f, 1.0f};
+	spriteMaterial[1] = {0.0f, 0.0f, 0.0f, 0.0f};
 }
 
 void GameScene::Update() {
 	// 自キャラの更新
-	if (isChange == true) {
-		spriteMaterial.w -= 0.01f;
-		sprite_->SetColor({0.0f, 0.0f, 0.0f, spriteMaterial.w});
+	if (isChange == true && isOverChange == false && isClearChange == false) {
+		spriteMaterial[0].w -= 0.01f;
+		sprite_[0]->SetColor({0.0f, 0.0f, 0.0f, spriteMaterial[0].w});
 	}
 
-	if (sprite_->GetColor().w <= 0.0f) {
+	if (sprite_[0]->GetColor().w <= 0.0f && isOverChange == false && isClearChange == false) {
 		isChange = false;
 	}
 
@@ -148,6 +155,21 @@ void GameScene::Update() {
 		// #endif
 
 		// debugCamera_->Update();
+
+		if (isClearChange == true) {
+			
+		}
+
+		if (isOverChange == true) {
+			sprite_[1]->SetColor({0.0f, 0.0f, 0.0f, spriteMaterial[1].w});
+			spriteMaterial[1].w += 0.01f;
+
+			if (spriteMaterial[1].w >= 1.0f) {
+				sceneNo = OVER;
+			}
+
+		}
+
 	}
 }
 
@@ -210,8 +232,12 @@ void GameScene::Draw() {
 
 	//player_->DrawUI();
 
-	if (isChange == true) {
-		sprite_->Draw();
+	if (isChange == true && isOverChange == false && isClearChange == false) {
+		sprite_[0]->Draw();
+	}
+
+	if (isChange == false && isOverChange == true && isClearChange == false) {
+		sprite_[1]->Draw();
 	}
 
 	// スプライト描画後処理
@@ -245,6 +271,7 @@ void GameScene::CheckAllCollisions() {
 			if (judge <= (playerRad + enemyRad) * (playerRad + enemyRad)) {
 				player_->OnCollision();
 				bullet->OnCollision();
+				isOverChange = true;
 			}
 		}
 	}

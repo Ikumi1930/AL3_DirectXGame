@@ -68,7 +68,7 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-	Sprite* sprite_;
+	Sprite* sprite_[3];
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
@@ -102,7 +102,10 @@ private: // メンバ変数
 	int32_t waitTimer_ = 0;
 
 	bool isChange;
-	Vector4 spriteMaterial;
+	Vector4 spriteMaterial[3];
+
+	bool isOverChange;
+	bool isClearChange;
 
 	/// <summary>
 	/// ゲームシーン用

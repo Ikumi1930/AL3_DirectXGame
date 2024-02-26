@@ -4,7 +4,8 @@
 enum SCENE {
 	TITLE,
 	STAGE,
-	CLEAR
+	CLEAR,
+	OVER
 };
 
 //シーン内での処理を行う基底クラス
